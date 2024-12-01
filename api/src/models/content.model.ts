@@ -19,12 +19,12 @@ const contentSchema = new Schema<IContent>({
   tags: [
     {
       type: Schema.Types.ObjectId,
-      ref: "TagModel",
+      ref: "Tag",
     },
   ],
   userId: {
     type: Schema.Types.ObjectId,
-    ref: "UserModel",
+    ref: "User",
   },
 });
 export const ContentModel = model<IContent>("content", contentSchema);

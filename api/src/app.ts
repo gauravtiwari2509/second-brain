@@ -183,7 +183,14 @@ app.post(
 app.get("/api/v1/content", verifyJwt, async (req, res): Promise<any> => {
   try {
     const userId = req?.user?._id;
-    const content = await ContentModel.find({ userId }).select("-userId -tags");
+    const content = await ContentModel.find({ userId })
+      .select("-tags")
+      .populate({
+        path: "userId",
+        model: "User",
+        select: "-password -refreshToken",
+      });
+
     if (content.length === 0) {
       return res.status(200).json({
         data: [],
@@ -206,7 +213,6 @@ app.delete(
   "/api/v1/content/:contentId",
   verifyJwt,
   async (req: Request, res: Response): Promise<any> => {
-    console.log("request comes");
     try {
       const { contentId } = req.params;
 

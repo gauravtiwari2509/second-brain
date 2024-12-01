@@ -6,8 +6,8 @@ const linkSchema = new Schema<ILink>({
   },
   userId: {
     type: Schema.Types.ObjectId,
-    ref: "UserModel",
+    ref: "User",
     required: true,
   },
 });
-export const LinkModel = model<ILink>("links", linkSchema);
+export const LinkModel = model<ILink>("Link", linkSchema);
