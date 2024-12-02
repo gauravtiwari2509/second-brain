@@ -16,7 +16,14 @@ declare global {
       user?: IUser;
     }
   }
-  type ContentType = "image" | "video" | "article" | "audio";
+  type ContentType =
+    | "image"
+    | "video"
+    | "article"
+    | "audio"
+    | "document"
+    | "tweet"
+    | "other";
   interface IContent extends Document {
     _id: mongoose.type.ObjectId;
     link: string;

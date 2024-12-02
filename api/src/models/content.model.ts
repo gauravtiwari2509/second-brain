@@ -1,6 +1,14 @@
 import { model, Schema } from "mongoose";
 
-const contentTypes = ["image", "video", "article", "audio"];
+const contentTypes: ContentType[] = [
+  "image",
+  "video",
+  "article",
+  "audio",
+  "document",
+  "tweet",
+  "other",
+];
 
 const contentSchema = new Schema<IContent>({
   link: {
