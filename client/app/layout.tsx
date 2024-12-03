@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { AddContentModalProvider } from "@/context/AddContentModalContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,12 +27,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <script async src="https://platform.twitter.com/widgets.js" charSet="utf8"></script>
+        <script
+          async
+          src="https://platform.twitter.com/widgets.js"
+          charSet="utf8"
+        ></script>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <AddContentModalProvider>{children}</AddContentModalProvider>
       </body>
     </html>
   );

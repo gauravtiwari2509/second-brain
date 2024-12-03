@@ -8,17 +8,20 @@ const buttonVariantClass: { primary: string; secondary: string } = {
   secondary: "bg-violet-200 text-violet-800",
 };
 const buttonDefaultStyles: string =
-  "min-w-40  py-3 px-3 flex flex-row gap-2 justify-center items-center rounded-xl font-medium ";
+  "min-w-40  p-3 flex flex-row gap-2 justify-center items-center rounded-xl font-medium ";
 
-const Button = ({ variant, text, iconUrl }: buttonProps) => {
+const Button = ({ variant, text, iconUrl, onclick }: buttonProps) => {
   return (
-    <button className={`${buttonVariantClass[variant]} ${buttonDefaultStyles}`}>
+    <button
+      className={`${buttonVariantClass[variant]} ${buttonDefaultStyles}`}
+      onClick={onclick}
+    >
       <Image
         src={iconUrl}
         width={18}
         height={18}
         alt="btn"
-        className="pointer-events-none"
+        className="pointer-events-none select-none"
       />
       <span>{text}</span>
     </button>

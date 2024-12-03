@@ -3,6 +3,7 @@ declare type buttonProps = {
   variant: "primary" | "secondary";
   iconUrl: string;
   text: string;
+  onclick: () => void;
 };
 declare type ContentCardProps = {
   type: string;
@@ -12,9 +13,28 @@ declare type ContentCardProps = {
   timestamp: string;
 };
 
-declare type  AuthContextType = {
-  user: { username: string } | null;
-  accessToken: string | null;
-  signIn: (username: string, password: string) => Promise<void>;
-  signOut: () => void;
+declare type ContentType =
+  | "image"
+  | "video"
+  | "article"
+  | "audio"
+  | "document"
+  | "tweet"
+  | "other";
+declare type Icontent = {
+  link: string;
+  type: ContentType;
+  title: string;
+  tags: Types.ObjectId[];
+};
+
+declare type AddContentModalContextType = {
+  addingContent: boolean;
+  setAddingContent: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+declare type userSignupDataType = {
+  username: string;
+  password: string;
+  confirmPassword:string;
 };
