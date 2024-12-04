@@ -11,7 +11,8 @@ declare type ContentCardProps = {
   title: string;
   tags: tag[];
   timestamp: string;
-  onDelete: () => Promise<void>;
+  // onDelete: () => Promise<void>;
+  onDelete: () => any;
 };
 
 declare type ContentType =

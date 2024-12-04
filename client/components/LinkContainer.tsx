@@ -7,7 +7,7 @@ const LinkContainer: React.FC<LinkContainerProps> = ({
 }) => {
   const copyLink = () => {
     navigator.clipboard
-      .writeText(`http://localhost:8000/api/v1/brain/${sharableLink}`)
+      .writeText(`http://localhost:3000/brain/${sharableLink}`)
       .then(() => {
         alert("Link copied to clipboard!");
       })
@@ -22,7 +22,7 @@ const LinkContainer: React.FC<LinkContainerProps> = ({
         className="text-sm truncate max-w-[150px] cursor-pointer"
         onClick={copyLink}
       >
-        {`http://localhost:8000/api/v1/brain/${sharableLink}`}
+        {`http://localhost:3000/brain/${sharableLink}`}
       </span>
 
       <button

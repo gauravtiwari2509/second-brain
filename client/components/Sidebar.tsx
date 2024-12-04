@@ -6,7 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 
 const Sidebar = () => {
   const [selectedDoc, setSelectedDoc] = useState<string>("All Content");
-  const { logout } = useAuth();
+  const { logout, accessToken } = useAuth();
   const handleItemClick = (label: string) => {
     setSelectedDoc(label);
   };
@@ -43,12 +43,14 @@ const Sidebar = () => {
         </div>
       </div>
       <div>
-        <button
-          onClick={logout}
-          className="bg-violet-800 text-white py-2 px-3 rounded-md"
-        >
-          logout
-        </button>
+        {accessToken && (
+          <button
+            onClick={logout}
+            className="bg-violet-800 text-white py-2 px-3 rounded-md"
+          >
+            logout
+          </button>
+        )}
       </div>
     </div>
   );

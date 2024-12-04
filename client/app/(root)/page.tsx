@@ -1,5 +1,5 @@
 "use client";
-import React from 'react'
+import React from "react";
 import AddContentBox from "@/components/AddContentBox";
 import ContentBox from "@/components/ContentBox";
 import Sidebar from "@/components/Sidebar";
@@ -7,12 +7,11 @@ import { useAddContentModal } from "@/context/AddContentModalContext";
 import { useAuth } from "@/context/AuthContext";
 import ProtectedRoute from "@/context/ProtectedRoute";
 import LandingPage from "@/components/LandingPage";
-import { useLoading } from '@/context/loadingContext';
 
 function Page() {
   const { addingContent } = useAddContentModal();
   const { accessToken } = useAuth();
- 
+
   if (!accessToken) {
     return <LandingPage />;
   }

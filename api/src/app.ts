@@ -402,7 +402,17 @@ app.get("/api/v1/brain/:shareLink", async (req, res): Promise<any> => {
     const contentUser = link.userId;
     const content: IContent[] | null = await ContentModel.find({
       userId: contentUser,
-    });
+    })
+      .populate({
+        path: "userId",
+        model: "User",
+        select: "username -_id",
+      })
+      .populate({
+        path: "tags",
+        model: "Tag",
+        select: "-createdAt -updatedAt -_id ",
+      });
 
     if (!content || content.length === 0) {
       return res
