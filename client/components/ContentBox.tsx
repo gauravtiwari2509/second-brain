@@ -82,7 +82,7 @@ const ContentBox = () => {
                 ))
               : null}
           </div>
-          {content.length === 0 && "!! no content found"}
+          {content.length === 0 && "!! no content available"}
           {errorMessage && (
             <div className="text-red-600 text-center">{errorMessage}</div>
           )}

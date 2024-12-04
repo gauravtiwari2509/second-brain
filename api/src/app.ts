@@ -310,6 +310,7 @@ app.delete(
     }
   }
 );
+
 function generateCharacterHash(): string {
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -352,6 +353,42 @@ app.post("/api/v1/brain/share", verifyJwt, async (req, res): Promise<any> => {
     }
   }
 });
+
+app.get("/api/v1/brain/share", verifyJwt, async (req, res): Promise<any> => {
+  try {
+    const userId = req?.user?._id;
+    const existingLink: ILink | null = await LinkModel.findOne({ userId });
+
+    if (!existingLink) {
+      return res.status(404).json({ message: "No link found for this user" });
+    }
+    return res
+      .status(200)
+      .json({ message: "link found", data: existingLink.hash });
+  } catch (error: any) {
+    return res
+      .status(500)
+      .json({ message: "Internal server Error, try again later." });
+  }
+});
+app.delete("/api/v1/brain/share", verifyJwt, async (req, res): Promise<any> => {
+  try {
+    const userId = req?.user?._id;
+    const existingLink: ILink | null = await LinkModel.findOne({ userId });
+
+    if (!existingLink) {
+      return res.status(404).json({ message: "No link found to delete" });
+    }
+
+    await LinkModel.deleteOne({ userId });
+    return res.status(200).json({ message: "Link deleted successfully" });
+  } catch (error: any) {
+    return res
+      .status(500)
+      .json({ message: "Internal server error, try again later." });
+  }
+});
+
 app.get("/api/v1/brain/:shareLink", async (req, res): Promise<any> => {
   try {
     const hash: string = req.params.shareLink;

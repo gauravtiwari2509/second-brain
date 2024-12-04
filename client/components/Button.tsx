@@ -14,7 +14,7 @@ const Button = ({ variant, text, iconUrl, onclick }: buttonProps) => {
   return (
     <button
       className={`${buttonVariantClass[variant]} ${buttonDefaultStyles}`}
-      onClick={onclick}
+      onClick={() => onclick()}
     >
       <Image
         src={iconUrl}

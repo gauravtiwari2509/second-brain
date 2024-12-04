@@ -59,3 +59,8 @@ declare type ContentItem = {
   userId: User;
   __v: number;
 };
+
+declare type LinkContainerProps = {
+  sharableLink: string;
+  onDelete: () => void;
+};
