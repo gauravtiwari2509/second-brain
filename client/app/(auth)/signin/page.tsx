@@ -5,6 +5,8 @@ import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { useLoading } from "@/context/loadingContext";
+import Loader from "@/components/Loader";
 
 const AddContentElement = "w-full flex justify-between items-center gap-4";
 const AddContentElementLabel = "w-full flex justify-between items-center";
@@ -13,6 +15,7 @@ const AddContentElementInput = "bg-gray-300 rounded p-2 text-base";
 const SignInPage = () => {
   const router = useRouter();
   const { accessToken, refreshAccessToken, setAccessToken } = useAuth();
+  const { isLoading, setLoading } = useLoading();
   const [userSignupData, setUserSignupData] = useState<{
     username: string;
     password: string;
@@ -38,29 +41,36 @@ const SignInPage = () => {
     const { username, password } = userSignupData;
 
     try {
-      const { data } = await axios.post("http://localhost:8000/api/v1/signin", {
+      setLoading(true);
+
+      const response = await axios.post("http://localhost:8000/api/v1/signin", {
         username,
         password,
       });
-      Cookies.set("accessToken", data.accessToken);
-      Cookies.set("refreshToken", data.refreshToken);
 
-      setAccessToken(data.accessToken);
+      Cookies.set("accessToken", response.data.accessToken);
+      Cookies.set("refreshToken", response.data.refreshToken);
+
+      setAccessToken(response.data.accessToken);
 
       setUserSignupData({ username: "", password: "" });
       router.push("/");
-    } catch (error) {
-      setErrorMessage("Invalid credentials, please try again.");
+      setLoading(false);
+    } catch (error: any) {
+      setErrorMessage(error.response?.data?.message || error.message);
+      setLoading(false);
     }
   };
 
   const handleCancelClick = () => {
     setUserSignupData({ username: "", password: "" });
     setErrorMessage(null);
+    router.push("/");
   };
 
   return (
     <div className="w-screen h-screen backdrop-blur-md backdrop-brightness-90 bg-black/40 z-50 fixed flex justify-center items-center">
+      {isLoading && <Loader />}
       <form
         onSubmit={handleSigninSubmit}
         className="flex flex-col bg-[#FFFFFFE6] px-4 py-6 gap-6 justify-center items-center rounded-xl border text-lg"

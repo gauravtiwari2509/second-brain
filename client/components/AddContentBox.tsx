@@ -4,6 +4,8 @@ import { useAddContentModal } from "@/context/AddContentModalContext";
 import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import Loader from "./Loader";
+import { useLoading } from "@/context/loadingContext";
 const AddContentElement = "w-full flex justify-between items-center gap-4";
 const AddContentElementLabel = "w-full flex justify-between items-center";
 const AddContentElementInput = "rounded p-2 text-base";
@@ -17,7 +19,9 @@ const AddContentBox = () => {
     title: "",
     tags: [],
   });
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  const { isLoading, setLoading } = useLoading();
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -42,7 +46,7 @@ const AddContentBox = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const response = await axios.post(
         "http://localhost:8000/api/v1/content",
@@ -53,18 +57,18 @@ const AddContentBox = () => {
           },
         }
       );
-      console.log(response);
-    } catch (error: any) {
-      console.log("Error message:", error.response.data.message);
-    }
-
-    setTimeout(() => {
+      setLoading(false);
       handleCancelClick();
-    }, 200);
+    } catch (error: any) {
+      // console.log("Error message:", error.response.data.message);
+      setErrorMessage(error.response?.data?.message || error.message);
+      setLoading(false);
+    }
   };
 
   return (
     <>
+      {isLoading && <Loader />}
       <form
         onSubmit={handleSubmit}
         className="flex flex-col bg-[#FFFFFFE6]  px-4 py-6 gap-6 justify-center items-center rounded-xl border text-lg"
@@ -132,6 +136,9 @@ const AddContentBox = () => {
             onChange={handleTagsChange}
           />
         </div>
+        {errorMessage && (
+          <div className="text-red-600 text-center">{errorMessage}</div>
+        )}
         <div className="flex gap-6">
           <button
             type="submit"

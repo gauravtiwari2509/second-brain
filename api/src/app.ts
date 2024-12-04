@@ -8,6 +8,7 @@ import { verifyJwt } from "./middlewares/middleware";
 import { TagModel } from "./models/tag.model";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
+import { LinkModel } from "./models/link.model";
 const app = express();
 
 app.use(express.json());
@@ -34,7 +35,7 @@ const generateAccessAndRefreshToken = async (
     await user.save({ validateBeforeSave: false });
     return { accessToken, refreshToken };
   } catch (err) {
-    console.error(err);
+    // console.error(err);
     throw new Error("Problem generating access and refresh tokens");
   }
 };
@@ -85,7 +86,7 @@ app.post(
           refreshToken,
         });
     } catch (error: any) {
-      console.error("Signup error:", error);
+      // console.error("Signup error:", error);
       return res.status(500).json({
         message: "Internal server error",
         error: error.message || "Something went wrong.",
@@ -130,14 +131,14 @@ app.post(
           httpOnly: true,
           sameSite: "strict",
         })
-        .status(200) // Send the response with status 200 (OK), since the user signed in successfully
+        .status(200)
         .json({
           message: "User successfully signed in",
           accessToken,
           refreshToken,
         });
     } catch (error: any) {
-      console.error("Signin error:", error);
+      // console.error("Signin error:", error);
       return res.status(500).json({
         message: "Internal server error",
         error: error.message || "Something went wrong.",
@@ -172,7 +173,7 @@ app.post(
         message: "User successfully logged out",
       });
     } catch (error: any) {
-      console.error("Logout error:", error);
+      // console.error("Logout error:", error);
       return res.status(500).json({
         message: "Internal server error",
         error: error.message || "Something went wrong.",
@@ -233,7 +234,7 @@ app.post(
         message: "content created successfully",
       });
     } catch (error: any) {
-      console.error("content creation error:", error);
+      // console.error("content creation error:", error);
       return res.status(500).json({
         message: "Internal server error",
         error: error.message || "Something went wrong.",
@@ -268,7 +269,7 @@ app.get("/api/v1/content", verifyJwt, async (req, res): Promise<any> => {
       message: `${content.length} content found`,
     });
   } catch (error: any) {
-    console.log("error occured while fetching content", error);
+    // console.log("error occured while fetching content", error);
     res.status(500).json({
       message: error.message || "internal server error",
     });
@@ -302,16 +303,85 @@ app.delete(
       await content.deleteOne();
       res.status(200).json({ message: "Content deleted successfully" });
     } catch (error: any) {
-      console.log("Error occurred while deleting content:", error);
+      // console.log("Error occurred while deleting content:", error);
       res
         .status(500)
         .json({ message: error.message || "Internal server error" });
     }
   }
 );
+function generateCharacterHash(): string {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  for (let i = 0; i < 9; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    result += characters[randomIndex];
+  }
+  return result;
+}
+app.post("/api/v1/brain/share", verifyJwt, async (req, res): Promise<any> => {
+  // first request aane pe check karenge ki wo user already koyi link generate kiya hai ya nhi agar kiya hai toh return same link
+  // agar nhi hai toh fir ek naya link create kar ke send kar denge
+  try {
+    const userId = req?.user?._id;
+    const existingLink: ILink | null = await LinkModel.findOne({ userId });
 
-app.post("/api/v1/brain/share", (req, res) => {});
-app.get("/api/v1/brain/:shareLink", (req, res) => {});
+    if (existingLink) {
+      return res
+        .status(200)
+        .json({ message: "link already exist", data: existingLink.hash });
+    }
+
+    const hash = generateCharacterHash();
+    const newLink = new LinkModel({ hash, userId });
+    await newLink.save();
+    return res.status(200).json({
+      data: hash,
+      message: "link generated successfully",
+    });
+  } catch (error: any) {
+    if (error?.code === 11000) {
+      return res
+        .status(400)
+        .json({ message: "Hash already exists, try again." });
+    } else {
+      return res
+        .status(500)
+        .json({ message: "Internal server Error, try again later." });
+    }
+  }
+});
+app.get("/api/v1/brain/:shareLink", async (req, res): Promise<any> => {
+  try {
+    const hash: string = req.params.shareLink;
+
+    const link: ILink | null = await LinkModel.findOne({ hash });
+
+    if (!link) {
+      return res.status(404).json({ message: "Link not found" });
+    }
+
+    const contentUser = link.userId;
+    const content: IContent[] | null = await ContentModel.find({
+      userId: contentUser,
+    });
+
+    if (!content || content.length === 0) {
+      return res
+        .status(200)
+        .json({ message: "No content available for this user" });
+    }
+
+    return res.status(200).json({
+      data: content,
+      message: "Content fetched successfully",
+    });
+  } catch (error) {
+    // console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 app.post(
   "/api/v1/refresh",
@@ -320,7 +390,7 @@ app.post(
       const { refreshToken } = req.cookies;
       const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
       if (!REFRESH_TOKEN_SECRET) {
-        console.log("no refresh token scret found");
+        // console.log("no refresh token scret found");
         return;
       }
       if (!refreshToken) {

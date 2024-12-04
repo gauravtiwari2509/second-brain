@@ -23,4 +23,18 @@ body {
 * {
   padding: 0px;
   margin: 0px;
+  box-sizing: border-box;
+}
+
+
+/* global.css */
+
+@keyframes blink {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-blink {
+  animation: blink 1s step-start infinite;
 }

@@ -3,11 +3,13 @@ const linkSchema = new Schema<ILink>(
   {
     hash: {
       type: String,
+      unique: true,
       required: true,
     },
     userId: {
       type: Schema.Types.ObjectId,
       ref: "User",
+      unique: true,
       required: true,
     },
   },

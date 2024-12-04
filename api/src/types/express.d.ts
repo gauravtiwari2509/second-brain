@@ -38,6 +38,7 @@ declare global {
   }
 
   interface ILink extends Document {
+    _id: mongoose.type.ObjectId;
     hash: string;
     userId: Types.ObjectId;
   }

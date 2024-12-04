@@ -1,26 +1,20 @@
 "use client";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import React from 'react'
 import AddContentBox from "@/components/AddContentBox";
 import ContentBox from "@/components/ContentBox";
 import Sidebar from "@/components/Sidebar";
 import { useAddContentModal } from "@/context/AddContentModalContext";
 import { useAuth } from "@/context/AuthContext";
 import ProtectedRoute from "@/context/ProtectedRoute";
+import LandingPage from "@/components/LandingPage";
+import { useLoading } from '@/context/loadingContext';
 
 function Page() {
   const { addingContent } = useAddContentModal();
   const { accessToken } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!accessToken) {
-      router.push("/signin");
-    }
-  }, [accessToken, router]);
-
+ 
   if (!accessToken) {
-    return null;
+    return <LandingPage />;
   }
 
   return (
