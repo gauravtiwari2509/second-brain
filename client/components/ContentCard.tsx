@@ -1,6 +1,7 @@
 "use client";
 import { documentType } from "@/constants";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const ContentCard = ({
@@ -63,6 +64,19 @@ const ContentCard = ({
     );
   };
 
+  function formatTimestamp(timestamp: string) {
+    const date = new Date(timestamp);
+    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")} ${date
+      .getHours()
+      .toString()
+      .padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}:${date
+      .getSeconds()
+      .toString()
+      .padStart(2, "0")}`;
+    return formattedDate;
+  }
   return (
     <>
       <div className="max-w-80 flex flex-col gap-2 items-start max-h-fit py-3 px-2 border rounded-xl hover:bg-gray-200">
@@ -91,10 +105,18 @@ const ContentCard = ({
         <div className="">{renderEmbed(link, type)}</div>
         <div>
           {tags.map((tag) => {
-            return <span key={tag}>#{tag}</span>;
+            return (
+              <Link
+                href={`/tag/${tag.title}`}
+                className="text-blue-600"
+                key={tag._id}
+              >
+                #{tag.title}{" "}
+              </Link>
+            );
           })}
         </div>
-        <span>added on {timestamp}</span>
+        <span>Added on {formatTimestamp(timestamp)}</span>
       </div>
     </>
   );

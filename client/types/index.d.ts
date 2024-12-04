@@ -9,7 +9,7 @@ declare type ContentCardProps = {
   type: string;
   link: string;
   title: string;
-  tags: string[];
+  tags: tag[];
   timestamp: string;
 };
 
@@ -36,5 +36,25 @@ declare type AddContentModalContextType = {
 declare type userSignupDataType = {
   username: string;
   password: string;
-  confirmPassword:string;
+  confirmPassword: string;
+};
+
+declare type User = {
+  _id: string;
+  username: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+};
+type tag = { _id: string; title: string; _v: number };
+declare type ContentItem = {
+  _id: string;
+  link: string;
+  type: string;
+  title: string;
+  tags: tag[];
+  createdAt: string;
+  updatedAt: string;
+  userId: User;
+  __v: number;
 };

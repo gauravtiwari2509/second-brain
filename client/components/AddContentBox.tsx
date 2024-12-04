@@ -1,20 +1,23 @@
 "use client";
-import {  contentTypes } from "@/constants";
+import { contentTypes } from "@/constants";
 import { useAddContentModal } from "@/context/AddContentModalContext";
-import React, { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 const AddContentElement = "w-full flex justify-between items-center gap-4";
 const AddContentElementLabel = "w-full flex justify-between items-center";
 const AddContentElementInput = "rounded p-2 text-base";
 
 const AddContentBox = () => {
   const { setAddingContent } = useAddContentModal();
-
+  const { accessToken } = useAuth();
   const [formData, setFormData] = useState<Icontent>({
     link: "",
     type: "other",
     title: "",
     tags: [],
   });
+
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -36,10 +39,25 @@ const AddContentBox = () => {
     });
     setAddingContent(false);
   };
-  const handleSubmit = (e: any) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // api request left to write
-    // console.log("Form Data:", formData);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/content",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      console.log(response);
+    } catch (error: any) {
+      console.log("Error message:", error.response.data.message);
+    }
+
     setTimeout(() => {
       handleCancelClick();
     }, 200);

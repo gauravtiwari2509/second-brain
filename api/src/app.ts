@@ -246,11 +246,15 @@ app.get("/api/v1/content", verifyJwt, async (req, res): Promise<any> => {
   try {
     const userId = req?.user?._id;
     const content = await ContentModel.find({ userId })
-      .select("-tags")
       .populate({
         path: "userId",
         model: "User",
         select: "-password -refreshToken",
+      })
+      .populate({
+        path: "tags",
+        model: "Tag",
+        select: "-createdAt -updatedAt",
       });
 
     if (content.length === 0) {
