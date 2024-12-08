@@ -4,6 +4,7 @@ import "./globals.css";
 import { AddContentModalProvider } from "@/context/AddContentModalContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { LoadingProvider } from "@/context/loadingContext";
+import { ContentProvider } from "@/context/ContentContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -40,7 +41,11 @@ export default function RootLayout({
       >
         <LoadingProvider>
           <AuthProvider>
-            <AddContentModalProvider>{children}</AddContentModalProvider>
+            <AddContentModalProvider>
+              <ContentProvider>
+              {children}
+              </ContentProvider>
+              </AddContentModalProvider>
           </AuthProvider>
         </LoadingProvider>
       </body>

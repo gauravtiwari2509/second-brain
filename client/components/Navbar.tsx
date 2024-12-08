@@ -4,7 +4,7 @@ import Button from "./Button";
 import { useAddContentModal } from "@/context/AddContentModalContext";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 import LinkContainer from "./LinkContainer";
 const Navbar = () => {
   const { setAddingContent } = useAddContentModal();
@@ -12,6 +12,7 @@ const Navbar = () => {
   const [sharableLink, setSharableLink] = useState(null);
 
   useEffect(() => {
+
     const fetchSharableLink = async () => {
       try {
         const response = await axios.get(
@@ -32,7 +33,6 @@ const Navbar = () => {
   }, [accessToken]);
   const handleBrainShare = async () => {
     console.log("brain sharing come");
-    console.log(accessToken);
     try {
       const response = await axios.post(
         "http://localhost:8000/api/v1/brain/share",
@@ -43,7 +43,6 @@ const Navbar = () => {
           },
         }
       );
-      console.log(response);
       setSharableLink(response?.data.data);
     } catch (error) {
       console.log(error);

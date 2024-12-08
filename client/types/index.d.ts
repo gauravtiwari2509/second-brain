@@ -23,6 +23,16 @@ declare type ContentType =
   | "document"
   | "tweet"
   | "other";
+
+declare type ContentType2 =
+  | "All Content"
+  | "image"
+  | "video"
+  | "article"
+  | "audio"
+  | "document"
+  | "tweet"
+  | "other";
 declare type Icontent = {
   link: string;
   type: ContentType;
@@ -65,3 +75,17 @@ declare type LinkContainerProps = {
   sharableLink: string;
   onDelete: () => void;
 };
+
+declare interface LoadingContextType {
+  isLoading: boolean;
+  setLoading: (isLoading: boolean) => void;
+}
+
+declare interface ContentContextValue {
+  content: ContentItem[];
+  setContent: React.Dispatch<React.SetStateAction<ContentItem[]>>;
+  deleteContent: (id: string) => Promise<void>;
+  selectedContent: ContentType2;
+  setSelectedContent: React.Dispatch<React.SetStateAction<ContentType2>>;
+  errorMessage: string | null;
+}

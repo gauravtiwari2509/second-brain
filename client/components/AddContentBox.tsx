@@ -3,9 +3,10 @@ import { contentTypes } from "@/constants";
 import { useAddContentModal } from "@/context/AddContentModalContext";
 import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Loader from "./Loader";
 import { useLoading } from "@/context/loadingContext";
+import { useContent } from "@/context/ContentContext";
 const AddContentElement = "w-full flex justify-between items-center gap-4";
 const AddContentElementLabel = "w-full flex justify-between items-center";
 const AddContentElementInput = "rounded p-2 text-base";
@@ -20,7 +21,7 @@ const AddContentBox = () => {
     tags: [],
   });
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
+  // const { setContent } = useContent();
   const { isLoading, setLoading } = useLoading();
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;

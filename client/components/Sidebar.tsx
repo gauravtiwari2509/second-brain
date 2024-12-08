@@ -3,12 +3,13 @@ import React, { useState } from "react";
 import { documentType } from "@/constants";
 import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
+import { useContent } from "@/context/ContentContext";
 
 const Sidebar = () => {
-  const [selectedDoc, setSelectedDoc] = useState<string>("All Content");
+  const { selectedContent, setSelectedContent } = useContent();
   const { logout, accessToken } = useAuth();
-  const handleItemClick = (label: string) => {
-    setSelectedDoc(label);
+  const handleItemClick = (label: ContentType2) => {
+    setSelectedContent(label);
   };
 
   return (
@@ -20,14 +21,22 @@ const Sidebar = () => {
         </div>
         <div className="w-full flex flex-col bg-red gap-1 p-3">
           {documentType.map((doc) => {
-            const isSelected = selectedDoc === doc.label;
+            const isSelected = selectedContent === doc.label;
             return (
               <div
                 key={doc.label}
                 className={`flex w-full justify-start items-center gap-3 py-3 pl-2 rounded select-none ${
                   isSelected ? "bg-slate-300" : "hover:bg-gray-200"
                 } hover:cursor-pointer`}
-                onClick={() => handleItemClick(doc.label)}
+                onClick={() => {
+                  if (doc.label === "All Content") {
+                    const label: ContentType2 | any = doc.label;
+                    handleItemClick(label);
+                  } else {
+                    const label: ContentType2 | any = doc.label.slice(0, -1);
+                    handleItemClick(label);
+                  }
+                }}
               >
                 <Image
                   src={doc.icon}

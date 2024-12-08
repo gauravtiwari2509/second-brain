@@ -1,11 +1,6 @@
 "use client";
 import React, { createContext, useState, useContext, ReactNode } from "react";
 
-interface LoadingContextType {
-  isLoading: boolean;
-  setLoading: (isLoading: boolean) => void;
-}
-
 const LoadingContext = createContext<LoadingContextType | undefined>(undefined);
 
 export const LoadingProvider = ({ children }: { children: ReactNode }) => {
