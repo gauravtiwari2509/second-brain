@@ -1,9 +1,8 @@
-"use client";
-
-import PublicContentCard from "@/components/PublicContentCard";
+"use client"
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import PublicContentCard from "@/components/PublicContentCard";
 
 // Define ContentType type
 type ContentType =
@@ -24,8 +23,8 @@ const TagPage = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [selectedType, setSelectedType] = useState<ContentType>("all");
 
-  // Fetch content based on brainhash
-  const fetchShareContent = async () => {
+  // Memoize fetchShareContent to prevent redefinition on every render
+  const fetchShareContent = useCallback(async () => {
     try {
       const response = await axios.get(
         `http://localhost:8000/api/v1/brain/${brainhash}`
@@ -40,7 +39,7 @@ const TagPage = () => {
         error.response?.data.message || "Not able to fetch content"
       );
     }
-  };
+  }, [brainhash]); // Dependencies: brainhash, as it's used in the API request
 
   const handleFilterChange = (type: ContentType) => {
     setSelectedType(type);
@@ -53,8 +52,8 @@ const TagPage = () => {
   };
 
   useEffect(() => {
-    fetchShareContent();
-  }, []);
+    fetchShareContent(); // This will now be stable and won't trigger unnecessary renders
+  }, [fetchShareContent]); // Now it correctly includes fetchShareContent as a dependency
 
   return (
     <>
