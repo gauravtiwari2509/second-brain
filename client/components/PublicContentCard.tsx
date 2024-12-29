@@ -1,8 +1,7 @@
 "use client";
 import { documentType } from "@/constants";
 import Image from "next/image";
-import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 
 const PublicContentCard = ({ link, type, title, timestamp }: any) => {
   const getIconUrl = (type: string) => {
@@ -36,7 +35,7 @@ const PublicContentCard = ({ link, type, title, timestamp }: any) => {
       }
     }
     if (type === "tweet") {
-      let updatedLink = link.replace("x.com", "twitter.com");
+      const updatedLink = link.replace("x.com", "twitter.com");
       return (
         <blockquote className="twitter-tweet">
           <a href={updatedLink} target="_blank"></a>
@@ -83,6 +82,16 @@ const PublicContentCard = ({ link, type, title, timestamp }: any) => {
             width={20}
             height={20}
             className="hover:cursor-pointer"
+            onClick={() => {
+              navigator.clipboard
+                .writeText(link)
+                .then(() => {
+                  alert("Link copied to clipboard!");
+                })
+                .catch((error) => {
+                  console.log("Failed to copy link", error);
+                });
+            }}
           />
         </div>
         <div className="">{renderEmbed(link, type)}</div>

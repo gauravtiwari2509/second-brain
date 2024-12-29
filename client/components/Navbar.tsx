@@ -51,7 +51,7 @@ const Navbar = () => {
 
   const handleBrainShareDelete = async () => {
     try {
-      const response = await axios.delete(
+      await axios.delete(
         "http://localhost:8000/api/v1/brain/share",
         {
           headers: {

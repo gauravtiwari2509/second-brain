@@ -7,14 +7,12 @@ import React, {
   useContext,
   ReactNode,
 } from "react";
-import axios from "axios";
 import Cookies from "js-cookie";
 
 interface AuthContextType {
   accessToken: string | null;
   refreshToken: string | null;
   logout: () => void;
-  refreshAccessToken: () => Promise<void>;
   setAccessToken: (token: string) => void;
 }
 
@@ -44,24 +42,24 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setRefreshTokenState(null);
   };
 
-  const refreshAccessToken = async () => {
-    if (!refreshToken) {
-      logout();
-      return;
-    }
+  // const refreshAccessToken = async () => {
+  //   if (!refreshToken) {
+  //     logout();
+  //     return;
+  //   }
 
-    try {
-      const { data } = await axios.post(
-        "http://localhost:8000/api/v1/refresh",
-        { refreshToken }
-      );
-      Cookies.set("accessToken", data.accessToken, { expires: 1 / 24 });
-      setAccessTokenState(data.accessToken);
-    } catch (error) {
-      console.error("Refresh token failed", error);
-      logout();
-    }
-  };
+  //   try {
+  //     const { data } = await axios.post(
+  //       "http://localhost:8000/api/v1/refresh",
+  //       { refreshToken }
+  //     );
+  //     Cookies.set("accessToken", data.accessToken, { expires: 1 / 24 });
+  //     setAccessTokenState(data.accessToken);
+  //   } catch (error) {
+  //     console.error("Refresh token failed", error);
+  //     logout();
+  //   }
+  // };
 
   return (
     <AuthContext.Provider
@@ -69,7 +67,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         accessToken,
         refreshToken,
         logout,
-        refreshAccessToken,
         setAccessToken: setAccessTokenState,
       }}
     >

@@ -46,7 +46,7 @@ const ContentCard = ({
     }
     //handling tweet embeed
     if (type === "tweet") {
-      let updatedLink = link.replace("x.com", "twitter.com");
+      const updatedLink = link.replace("x.com", "twitter.com");
       return (
         <blockquote className="twitter-tweet">
           <a href={updatedLink} target="_blank"></a>
@@ -94,15 +94,15 @@ const ContentCard = ({
               width={20}
               height={20}
               className="hover:cursor-pointer"
-              onClick={()=>{
+              onClick={() => {
                 navigator.clipboard
-                .writeText(link)
-                .then(() => {
-                  alert("Link copied to clipboard!");
-                })
-                .catch((error) => {
-                  console.log("Failed to copy link", error);
-                });
+                  .writeText(link)
+                  .then(() => {
+                    alert("Link copied to clipboard!");
+                  })
+                  .catch((error) => {
+                    console.log("Failed to copy link", error);
+                  });
               }}
             />
             <Image

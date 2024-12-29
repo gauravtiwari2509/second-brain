@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useLoading } from "@/context/loadingContext";
@@ -14,7 +14,7 @@ const AddContentElementInput = "bg-gray-300 rounded p-2 text-base";
 
 const SignInPage = () => {
   const router = useRouter();
-  const { accessToken, refreshAccessToken, setAccessToken } = useAuth();
+  const { accessToken, setAccessToken } = useAuth();
   const { isLoading, setLoading } = useLoading();
   const [userSignupData, setUserSignupData] = useState<{
     username: string;
