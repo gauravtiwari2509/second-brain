@@ -76,7 +76,7 @@ const PublicContentCard = ({ link, type, title, timestamp }: any) => {
           <div className="w-[80%] flex gap-3 items-center justify-start capitalize ">
             <Image src={getIconUrl(type)} alt={type} width={18} height={18} />
             <span>{title}</span>
-          </div>    
+          </div>
           <Image
             src="/share.svg"
             alt="share"

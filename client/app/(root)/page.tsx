@@ -25,10 +25,10 @@ function Page() {
           </div>
         )}
         <div className="flex">
-          <div className="w-[20vw] h-screen p-4 fixed top-0 left-0 border-gray-300 shadow-lg shadow-gray-300 z-10">
+          <div className="md:w-[20vw] h-screen p-4 fixed top-0 left-0 border-gray-300 shadow-lg shadow-gray-300 z-10 hidden md:block">
             <Sidebar />
           </div>
-          <div className="w-[80vw] ml-[20vw] bg-[#F9FBFC] min-h-screen">
+          <div className="md:w-[80vw] w-full md:ml-[20vw] bg-[#F9FBFC] min-h-screen">
             <ContentBox />
           </div>
         </div>

@@ -8,31 +8,36 @@ import React, {
   useEffect,
 } from "react";
 import { useLoading } from "./loadingContext";
-import Cookies from "js-cookie";
 import axios from "axios";
+import { useAuth } from "./AuthContext";
 
 const contentContext = createContext<ContentContextValue | undefined>(
   undefined
 );
 
 export const ContentProvider = ({ children }: { children: ReactNode }) => {
+  const [originalContent, setOriginalContent] = useState<ContentItem[]>([]);
   const [content, setContent] = useState<ContentItem[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [selectedContent, setSelectedContent] =
     useState<ContentType2>("All Content");
   const { setLoading } = useLoading();
-  const accessToken = Cookies.get("accessToken");
-
-  // Fetch content from the API
+  const { accessToken } = useAuth();
   const getContent = async () => {
     try {
       setLoading(true);
+      if (!accessToken) {
+        return;
+      }
       const response = await axios.get("http://localhost:8000/api/v1/content", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      setContent(response.data.data);
+      setOriginalContent(response.data.data);
+      if (selectedContent === "All Content") {
+        setContent(originalContent);
+      }
     } catch (error: any) {
       setErrorMessage(error.response?.data?.message || error.message);
     } finally {
@@ -59,17 +64,21 @@ export const ContentProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     getContent();
-  }, []);
+  }, [accessToken]);
 
-  useEffect(() => {
+  const filterContentFun = () => {
     if (selectedContent === "All Content") {
-      getContent();
+      setContent(originalContent);
     } else {
-      setContent((prevContent) =>
-        prevContent.filter((item) => item.type === selectedContent)
-      );
+      const data = originalContent.filter((item) => {
+        return item.type === selectedContent;
+      });
+      setContent(data);
     }
-  }, [selectedContent]);
+  };
+  useEffect(() => {
+    filterContentFun();
+  }, [selectedContent,originalContent]);
 
   return (
     <contentContext.Provider

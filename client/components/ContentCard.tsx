@@ -81,7 +81,7 @@ const ContentCard = ({
   }
   return (
     <>
-      <div className="max-w-80 flex flex-col gap-2 items-start max-h-fit py-3 px-2 border rounded-xl hover:bg-gray-200">
+      <div className="max-w-72 lg:max-w-full flex flex-col gap-2 items-start max-h-fit py-3 px-2 border rounded-xl hover:bg-gray-200">
         <div className="w-full flex items-between justify-start gap-2">
           <div className="w-[80%] flex gap-3 items-center justify-start capitalize ">
             <Image src={getIconUrl(type)} alt={type} width={18} height={18} />
@@ -94,6 +94,16 @@ const ContentCard = ({
               width={20}
               height={20}
               className="hover:cursor-pointer"
+              onClick={()=>{
+                navigator.clipboard
+                .writeText(link)
+                .then(() => {
+                  alert("Link copied to clipboard!");
+                })
+                .catch((error) => {
+                  console.log("Failed to copy link", error);
+                });
+              }}
             />
             <Image
               src="/delete.svg"

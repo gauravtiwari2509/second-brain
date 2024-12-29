@@ -256,7 +256,8 @@ app.get("/api/v1/content", verifyJwt, async (req, res): Promise<any> => {
         path: "tags",
         model: "Tag",
         select: "-createdAt -updatedAt",
-      });
+      })
+      .sort({ createdAt: -1 });
 
     if (content.length === 0) {
       return res.status(200).json({
@@ -360,7 +361,7 @@ app.get("/api/v1/brain/share", verifyJwt, async (req, res): Promise<any> => {
     const existingLink: ILink | null = await LinkModel.findOne({ userId });
 
     if (!existingLink) {
-      return res.status(404).json({ message: "No link found for this user" });
+      return res.status(204).json({ message: "No link found for this user" });
     }
     return res
       .status(200)

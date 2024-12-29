@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { documentType } from "@/constants";
 import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
@@ -17,7 +17,7 @@ const Sidebar = () => {
       <div className="w-full flex flex-col gap-8">
         <div className="flex w-full gap-4 items-center">
           <Image src="/brain.svg" alt="logo" width={40} height={40} />
-          <span className="font-bold text-2xl">Second Brain</span>
+          <span className="font-bold lg:text-2xl md:text-xl ">Second Brain</span>
         </div>
         <div className="w-full flex flex-col bg-red gap-1 p-3">
           {documentType.map((doc) => {
@@ -45,7 +45,9 @@ const Sidebar = () => {
                   height={25}
                   className="pointer-events-none"
                 />
-                <span className="text-xl font-semibold">{doc.label}</span>
+                <span className=" font-semibold sm:text-sm md:text-sm lg:text-xl">
+                  {doc.label}
+                </span>
               </div>
             );
           })}

@@ -4,15 +4,15 @@ import Button from "./Button";
 import { useAddContentModal } from "@/context/AddContentModalContext";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
-// import Cookies from "js-cookie";
 import LinkContainer from "./LinkContainer";
+import { useContent } from "@/context/ContentContext";
+
 const Navbar = () => {
   const { setAddingContent } = useAddContentModal();
   const { accessToken } = useAuth();
   const [sharableLink, setSharableLink] = useState(null);
-
+  const { selectedContent } = useContent();
   useEffect(() => {
-
     const fetchSharableLink = async () => {
       try {
         const response = await axios.get(
@@ -25,14 +25,14 @@ const Navbar = () => {
         );
         setSharableLink(response?.data.data);
       } catch (error) {
-        console.log("Error fetching sharable link", error);
+        setSharableLink(null);
       }
     };
 
     fetchSharableLink();
   }, [accessToken]);
+
   const handleBrainShare = async () => {
-    console.log("brain sharing come");
     try {
       const response = await axios.post(
         "http://localhost:8000/api/v1/brain/share",
@@ -48,6 +48,7 @@ const Navbar = () => {
       console.log(error);
     }
   };
+
   const handleBrainShareDelete = async () => {
     try {
       const response = await axios.delete(
@@ -63,36 +64,37 @@ const Navbar = () => {
       console.log(error);
     }
   };
+
   return (
-    <>
-      <div className="flex justify-between items-center">
-        <span className="font-bold text-2xl">All Memory</span>
-        <div className="flex gap-3">
-          {/* <button className="border p-2 bg-violet-200 text-violet-800 rounded-2xl">refresh</button> */}
-          {!sharableLink ? (
-            <Button
-              text="Share Brain"
-              variant="secondary"
-              iconUrl="/share.svg"
-              onclick={() => {
-                handleBrainShare();
-              }}
-            />
-          ) : (
-            <LinkContainer
-              sharableLink={sharableLink}
-              onDelete={handleBrainShareDelete}
-            />
-          )}
+    //issue in layout for sized 765-815px
+    <div className="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6 p-4">
+      <span className="font-bold text-xl lg:text-3xl text-left">
+        {selectedContent} Memory
+      </span>
+      <div className="flex flex-wrap gap-3 justify-center md:justify-end ">
+        {!sharableLink ? (
           <Button
-            text="Add Content"
-            variant="primary"
-            iconUrl="/add.svg"
-            onclick={() => setAddingContent(true)}
+            text="Share Brain"
+            variant="secondary"
+            iconUrl="/share.svg"
+            onclick={() => {
+              handleBrainShare();
+            }}
           />
-        </div>
+        ) : (
+          <LinkContainer
+            sharableLink={sharableLink}
+            onDelete={handleBrainShareDelete}
+          />
+        )}
+        <Button
+          text="Add Content"
+          variant="primary"
+          iconUrl="/add.svg"
+          onclick={() => setAddingContent(true)}
+        />
       </div>
-    </>
+    </div>
   );
 };
 
