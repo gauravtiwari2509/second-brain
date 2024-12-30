@@ -222,9 +222,9 @@ app.post("/api/v1/content", middleware_1.verifyJwt, (req, res) => __awaiter(void
     }
 }));
 app.get("/api/v1/content", middleware_1.verifyJwt, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _b;
+    var _a;
     try {
-        const userId = (_b = req === null || req === void 0 ? void 0 : req.user) === null || _b === void 0 ? void 0 : _b._id;
+        const userId = (_a = req === null || req === void 0 ? void 0 : req.user) === null || _a === void 0 ? void 0 : _a._id;
         const content = yield content_model_1.ContentModel.find({ userId })
             .populate({
             path: "userId",
@@ -256,7 +256,7 @@ app.get("/api/v1/content", middleware_1.verifyJwt, (req, res) => __awaiter(void 
     }
 }));
 app.delete("/api/v1/content/:contentId", middleware_1.verifyJwt, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _c;
+    var _a;
     try {
         const { contentId } = req.params;
         if (!contentId) {
@@ -267,7 +267,7 @@ app.delete("/api/v1/content/:contentId", middleware_1.verifyJwt, (req, res) => _
             return res.status(404).json({ message: "Content not found" });
         }
         // Ensuring the content belongs to the authenticated user
-        if (content.userId.toString() !== ((_c = req.user) === null || _c === void 0 ? void 0 : _c._id.toString())) {
+        if (content.userId.toString() !== ((_a = req.user) === null || _a === void 0 ? void 0 : _a._id.toString())) {
             return res.status(403).json({
                 message: "You do not have permission to delete this content",
             });
@@ -292,11 +292,11 @@ function generateCharacterHash() {
     return result;
 }
 app.post("/api/v1/brain/share", middleware_1.verifyJwt, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _d;
+    var _a;
     // first request aane pe check karenge ki wo user already koyi link generate kiya hai ya nhi agar kiya hai toh return same link
     // agar nhi hai toh fir ek naya link create kar ke send kar denge
     try {
-        const userId = (_d = req === null || req === void 0 ? void 0 : req.user) === null || _d === void 0 ? void 0 : _d._id;
+        const userId = (_a = req === null || req === void 0 ? void 0 : req.user) === null || _a === void 0 ? void 0 : _a._id;
         const existingLink = yield link_model_1.LinkModel.findOne({ userId });
         if (existingLink) {
             return res
@@ -325,9 +325,9 @@ app.post("/api/v1/brain/share", middleware_1.verifyJwt, (req, res) => __awaiter(
     }
 }));
 app.get("/api/v1/brain/share", middleware_1.verifyJwt, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _e;
+    var _a;
     try {
-        const userId = (_e = req === null || req === void 0 ? void 0 : req.user) === null || _e === void 0 ? void 0 : _e._id;
+        const userId = (_a = req === null || req === void 0 ? void 0 : req.user) === null || _a === void 0 ? void 0 : _a._id;
         const existingLink = yield link_model_1.LinkModel.findOne({ userId });
         if (!existingLink) {
             return res.status(204).json({ message: "No link found for this user" });
@@ -343,9 +343,9 @@ app.get("/api/v1/brain/share", middleware_1.verifyJwt, (req, res) => __awaiter(v
     }
 }));
 app.delete("/api/v1/brain/share", middleware_1.verifyJwt, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _f;
+    var _a;
     try {
-        const userId = (_f = req === null || req === void 0 ? void 0 : req.user) === null || _f === void 0 ? void 0 : _f._id;
+        const userId = (_a = req === null || req === void 0 ? void 0 : req.user) === null || _a === void 0 ? void 0 : _a._id;
         const existingLink = yield link_model_1.LinkModel.findOne({ userId });
         if (!existingLink) {
             return res.status(404).json({ message: "No link found to delete" });
