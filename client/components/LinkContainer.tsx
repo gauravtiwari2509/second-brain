@@ -19,7 +19,7 @@ const LinkContainer: React.FC<LinkContainerProps> = ({
   return (
     <div className="flex items-center gap-2 bg-violet-200 text-violet-800 border p-3 rounded-xl w-[150px] md:w-[200px] lg:w-[250px]">
     <span className="text-sm truncate cursor-pointer max-w-[60%] md:max-w-[70%] lg:max-w-[80%]">
-      {`https://second-brain-backend-xjdg.onrender.com:3000/brain/${sharableLink}`}
+      {`https://second-brain-backend-xjdg.onrender.com/api/v1/brain/${sharableLink}`}
     </span>
  
     <Image
