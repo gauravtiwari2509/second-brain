@@ -49,10 +49,13 @@ const SignupPage = () => {
 
     try {
       setLoading(true);
-      const { data } = await axios.post("http://localhost:8000/api/v1/signup", {
-        username,
-        password,
-      });
+      const { data } = await axios.post(
+        "https://second-brain-backend-xjdg.onrender.com/api/v1/signup",
+        {
+          username,
+          password,
+        }
+      );
 
       Cookies.set("accessToken", data.accessToken, { expires: 1 / 24 });
       Cookies.set("refreshToken", data.refreshToken);

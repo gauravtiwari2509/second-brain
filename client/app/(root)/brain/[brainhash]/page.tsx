@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useParams } from "next/navigation";
@@ -27,7 +27,7 @@ const TagPage = () => {
   const fetchShareContent = useCallback(async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/v1/brain/${brainhash}`
+        `https://second-brain-backend-xjdg.onrender.com/api/v1/brain/${brainhash}`
       );
       const fetchedContent = response.data.data;
       setContent(fetchedContent);

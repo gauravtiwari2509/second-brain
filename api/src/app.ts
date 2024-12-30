@@ -40,7 +40,9 @@ const generateAccessAndRefreshToken = async (
   }
 };
 //routes declaration
-
+app.get('/',(req: Request, res: Response)=>{
+  res.send("hi")
+})
 app.post(
   "/api/v1/signup",
   async (req: Request, res: Response): Promise<any> => {

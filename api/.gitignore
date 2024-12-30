@@ -2,9 +2,8 @@
 node_modules/
 
 # TypeScript build output
-/dist
+/dist 
 /build
-
 # Logs
 logs
 *.log

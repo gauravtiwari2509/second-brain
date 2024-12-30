@@ -19,7 +19,7 @@ const MobNavbar = () => {
     const fetchSharableLink = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/brain/share",
+          "https://second-brain-backend-xjdg.onrender.com/api/v1/brain/share",
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -38,7 +38,7 @@ const MobNavbar = () => {
   const handleBrainShare = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/v1/brain/share",
+        "https://second-brain-backend-xjdg.onrender.com/api/v1/brain/share",
         {},
         {
           headers: {
@@ -55,7 +55,7 @@ const MobNavbar = () => {
   const handleBrainShareDelete = async () => {
     try {
       const response = await axios.delete(
-        "http://localhost:8000/api/v1/brain/share",
+        "https://second-brain-backend-xjdg.onrender.com/api/v1/brain/share",
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
