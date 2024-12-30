@@ -71,7 +71,7 @@ const MobNavbar = () => {
   const copyLink = () => {
     if (sharableLink) {
       navigator.clipboard
-        .writeText(`http://localhost:3000/brain/${sharableLink}`)
+        .writeText(`https://second-brain-backend-xjdg.onrender.com/brain/${sharableLink}`)
         .then(() => {
           alert("Link copied to clipboard!");
         })
