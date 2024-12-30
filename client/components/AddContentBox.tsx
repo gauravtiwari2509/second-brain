@@ -50,7 +50,7 @@ const AddContentBox = () => {
     setLoading(true);
     try {
       await axios.post(
-        "http://localhost:8000/api/v1/content",
+        "https://second-brain-backend-xjdg.onrender.com/api/v1/content",
         formData,
         {
           headers: {

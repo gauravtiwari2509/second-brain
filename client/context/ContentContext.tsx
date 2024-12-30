@@ -29,11 +29,14 @@ export const ContentProvider = ({ children }: { children: ReactNode }) => {
       if (!accessToken) {
         return;
       }
-      const response = await axios.get("http://localhost:8000/api/v1/content", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      const response = await axios.get(
+        "https://second-brain-backend-xjdg.onrender.com/api/v1/content",
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
       setOriginalContent(response.data.data);
       if (selectedContent === "All Content") {
         setContent(originalContent);
@@ -49,11 +52,14 @@ export const ContentProvider = ({ children }: { children: ReactNode }) => {
   const deleteContent = async (id: string) => {
     try {
       setLoading(true);
-      await axios.delete(`http://localhost:8000/api/v1/content/${id}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      await axios.delete(
+        `https://second-brain-backend-xjdg.onrender.com/api/v1/content/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
       setContent((prev) => prev.filter((item) => item._id !== id));
     } catch (error: any) {
       setErrorMessage(error.response?.data?.message || error.message);
@@ -78,7 +84,7 @@ export const ContentProvider = ({ children }: { children: ReactNode }) => {
   };
   useEffect(() => {
     filterContentFun();
-  }, [selectedContent,originalContent]);
+  }, [selectedContent, originalContent]);
 
   return (
     <contentContext.Provider

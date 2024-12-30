@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   //   try {
   //     const { data } = await axios.post(
-  //       "http://localhost:8000/api/v1/refresh",
+  //       "https://second-brain-backend-xjdg.onrender.com/api/v1/refresh",
   //       { refreshToken }
   //     );
   //     Cookies.set("accessToken", data.accessToken, { expires: 1 / 24 });
