@@ -23,8 +23,8 @@ const LinkContainer: React.FC<LinkContainerProps> = ({
     </span>
  
     <Image
-      src="/share.svg"
-      alt="share"
+      src="/copy.svg"
+      alt="copy"
       width={20}
       height={20}
       className="hover:cursor-pointer"

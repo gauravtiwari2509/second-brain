@@ -41,6 +41,10 @@ const SignupPage = () => {
   const handleSignupSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const { username, password, confirmPassword } = userSignupData;
+    if (!username.trim() || !password.trim()) {
+      setErrorMessage("space not allowed");
+      return; //later make the username and password only alphanumeric and some special character right now spacee can come in between by this approach
+    }
 
     if (password !== confirmPassword) {
       setErrorMessage("Passwords do not match!");
