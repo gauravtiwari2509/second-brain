@@ -25,10 +25,13 @@ const TagPage = () => {
 
   // Memoize fetchShareContent to prevent redefinition on every render
   const fetchShareContent = useCallback(async () => {
+    const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+    if (!baseURL) {
+      setErrorMessage("API base URL is not defined.");
+      return;
+    }
     try {
-      const response = await axios.get(
-        `https://second-brain-backend-xjdg.onrender.com/api/v1/brain/${brainhash}`
-      );
+      const response = await axios.get(`${baseURL}/brain/${brainhash}`);
       const fetchedContent = response.data.data;
       setContent(fetchedContent);
       setFilteredContent(fetchedContent);

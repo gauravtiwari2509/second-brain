@@ -50,16 +50,18 @@ const SignupPage = () => {
       setErrorMessage("Passwords do not match!");
       return;
     }
-
+    const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+    if (!baseURL) {
+      setErrorMessage("API base URL is not defined.");
+      setLoading(false);
+      return;
+    }
     try {
       setLoading(true);
-      const { data } = await axios.post(
-        "https://second-brain-backend-xjdg.onrender.com/api/v1/signup",
-        {
-          username,
-          password,
-        }
-      );
+      const { data } = await axios.post(`${baseURL}/signup`, {
+        username,
+        password,
+      });
 
       Cookies.set("accessToken", data.accessToken, { expires: 1 / 24 });
       Cookies.set("refreshToken", data.refreshToken);

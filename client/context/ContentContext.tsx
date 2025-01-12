@@ -29,14 +29,16 @@ export const ContentProvider = ({ children }: { children: ReactNode }) => {
       if (!accessToken) {
         return;
       }
-      const response = await axios.get(
-        "https://second-brain-backend-xjdg.onrender.com/api/v1/content",
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+      if (!baseURL) {
+        setErrorMessage("API base URL is not defined.");
+        return;
+      }
+      const response = await axios.get(`${baseURL}/content`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
       setOriginalContent(response.data.data);
       if (selectedContent === "All Content") {
         setContent(originalContent);
@@ -50,16 +52,18 @@ export const ContentProvider = ({ children }: { children: ReactNode }) => {
 
   // Delete content
   const deleteContent = async (id: string) => {
+    const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+    if (!baseURL) {
+      setErrorMessage("API base URL is not defined.");
+      return;
+    }
     try {
       setLoading(true);
-      await axios.delete(
-        `https://second-brain-backend-xjdg.onrender.com/api/v1/content/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      await axios.delete(`${baseURL}/content/${id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
       setContent((prev) => prev.filter((item) => item._id !== id));
     } catch (error: any) {
       setErrorMessage(error.response?.data?.message || error.message);

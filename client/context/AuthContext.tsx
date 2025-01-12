@@ -47,10 +47,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   //     logout();
   //     return;
   //   }
+  // const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+  // if (!baseURL) {
+  //   return;
+  // }
 
   //   try {
   //     const { data } = await axios.post(
-  //       "https://second-brain-backend-xjdg.onrender.com/api/v1/refresh",
+  //       `${baseURL}/refresh`,
   //       { refreshToken }
   //     );
   //     Cookies.set("accessToken", data.accessToken, { expires: 1 / 24 });

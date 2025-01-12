@@ -17,15 +17,16 @@ const MobNavbar = () => {
 
   useEffect(() => {
     const fetchSharableLink = async () => {
+      const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+      if (!baseURL) {
+        return;
+      }
       try {
-        const response = await axios.get(
-          "https://second-brain-backend-xjdg.onrender.com/api/v1/brain/share",
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
+        const response = await axios.get(`${baseURL}/brain/share`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
         setSharableLink(response?.data.data);
       } catch (error) {
         console.log("Error fetching sharable link", error);
@@ -36,9 +37,13 @@ const MobNavbar = () => {
   }, [accessToken]);
 
   const handleBrainShare = async () => {
+    const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+    if (!baseURL) {
+      return;
+    }
     try {
       const response = await axios.post(
-        "https://second-brain-backend-xjdg.onrender.com/api/v1/brain/share",
+        `${baseURL}/brain/share`,
         {},
         {
           headers: {
@@ -53,15 +58,16 @@ const MobNavbar = () => {
   };
 
   const handleBrainShareDelete = async () => {
+    const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+    if (!baseURL) {
+      return;
+    }
     try {
-      const response = await axios.delete(
-        "https://second-brain-backend-xjdg.onrender.com/api/v1/brain/share",
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      const response = await axios.delete(`${baseURL}/brain/share`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
       setSharableLink(null);
     } catch (error) {
       console.log(error);

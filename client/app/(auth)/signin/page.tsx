@@ -42,8 +42,13 @@ const SignInPage = () => {
 
     try {
       setLoading(true);
-
-      const response = await axios.post("https://second-brain-backend-xjdg.onrender.com/api/v1/signin", {
+      const baseURL= process.env.NEXT_PUBLIC_API_BASE_URL;
+      if (!baseURL) {
+        setErrorMessage("API base URL is not defined.");
+        setLoading(false);
+        return;
+      }
+      const response = await axios.post(`${baseURL}/signin`, {
         username,
         password,
       });

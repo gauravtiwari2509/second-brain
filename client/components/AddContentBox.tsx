@@ -48,16 +48,25 @@ const AddContentBox = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    const baseURL= process.env.NEXT_PUBLIC_API_BASE_URL;
+    if (!baseURL) {
+      setErrorMessage("API base URL is not defined.");
+      setLoading(false);
+      return;
+    }
+      setErrorMessage("");
+  
+    if (!formData || !accessToken) {
+      setErrorMessage("Form data or access token is missing.");
+      setLoading(false);
+      return;
+    }
     try {
-      await axios.post(
-        "https://second-brain-backend-xjdg.onrender.com/api/v1/content",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      await axios.post(`${baseURL}/content`, formData, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
       setLoading(false);
       handleCancelClick();
     } catch (error: any) {
