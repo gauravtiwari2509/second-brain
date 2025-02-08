@@ -34,8 +34,10 @@ const LandingPage = () => {
           </button>
         </div>
       </div>
-<span>New Version launched</span>
-      <a href='https://second-brain-advanced.vercel.app/'>try</a>
+      <div className='flex flex-col text-lg w-full justify-center items-center'>
+      <span>New Version launched</span>
+      <a className='cursor-pointer text-blue-500' href='https://second-brain-advanced.vercel.app/'>try</a>
+      </div>
       <div className="py-16 px-8 bg-white text-center">
         <h2 className="text-3xl font-bold text-violet-800 mb-6">
           Why Use Second Brain?
